@@ -13,8 +13,8 @@ resource "aws_s3_bucket" "s3_bucket_myflaskapp" {
 
 resource "aws_s3_bucket_object" "s3_bucket_myflaskapp_obj" {
     bucket = aws_s3_bucket.s3_bucket_myflaskapp.id
-    key = "beanstalk/app-${build_number}.zip"
-    source = "app_${build_number}.zip"
+    key = "beanstalk/app-${var.build_number}.zip"
+    source = "app_${var.build_number}.zip"
 }
 
 resource "aws_elastic_beanstalk_application" "beanstalk_myflaskapp" {
@@ -26,7 +26,7 @@ resource "aws_elastic_beanstalk_application_version" "beanstalk_myapp_version" {
   application = aws_elastic_beanstalk_application.beanstalk_myflaskapp.name
   bucket = aws_s3_bucket.s3_bucket_myflaskapp.id
   key = aws_s3_bucket_object.s3_bucket_myflaskapp_obj.id
-  name = "myapp-${build_number}"
+  name = "myapp-${var.build_number}"
 }
 
 resource "aws_elastic_beanstalk_environment" "beanstalk_myapp_env" {
